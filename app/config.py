@@ -17,13 +17,6 @@ class APISettings(BaseSettings):
     HOST: str = "0.0.0.0"
     PORT: int = 8200
 
-
-class JWTSettings(BaseSettings):
-    SECRET: str = "dev-secret-change-me"
-    ALGO: str = "HS256"
-    TTL: int = 86400
-
-
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_nested_delimiter="__",
@@ -33,7 +26,6 @@ class Settings(BaseSettings):
 
     DB: DatabaseSettings = DatabaseSettings()
     API: APISettings = APISettings()
-    JWT: JWTSettings = JWTSettings()
 
 
 settings = Settings()

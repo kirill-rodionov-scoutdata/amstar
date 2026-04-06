@@ -1,0 +1,23 @@
+[
+  {
+    "passenger_name": "Maria Garcia",
+    "flight_number": "BA256",
+    "pickup_time": "2027-06-15T10:30:00+00:00",
+    "pickup_location": "Heathrow Airport Terminal 5",
+    "dropoff_location": "The Savoy Hotel, London"
+  },
+  {
+    "passenger_name": "James Wilson",
+    "flight_number": "LH400",
+    "pickup_time": "2027-07-20T08:00:00+00:00",
+    "pickup_location": "Frankfurt Airport Terminal 1",
+    "dropoff_location": "Marriott Frankfurt City Center"
+  },
+  {
+    "passenger_name": "Yuki Tanaka",
+    "flight_number": "NH212",
+    "pickup_time": "2027-08-05T14:45:00+00:00",
+    "pickup_location": "Narita International Airport",
+    "dropoff_location": "Park Hyatt Tokyo"
+  }
+]

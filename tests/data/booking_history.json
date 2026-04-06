@@ -1,0 +1,9 @@
+{
+  "booking": {
+    "passenger_name": "Hiroshi Nakamura",
+    "flight_number": "JL7",
+    "pickup_time": "2027-11-01T09:00:00+00:00",
+    "pickup_location": "Tokyo Narita Airport Terminal 2",
+    "dropoff_location": "The Peninsula Tokyo"
+  }
+}

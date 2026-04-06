@@ -1,0 +1,8 @@
+{
+  "action_next": {
+    "action": "next"
+  },
+  "action_cancel": {
+    "action": "cancel"
+  }
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "case": "name_too_short",
+    "payload": {
+      "passenger_name": "A",
+      "flight_number": "BA256",
+      "pickup_time": "2027-06-15T10:30:00+00:00",
+      "pickup_location": "Heathrow Airport Terminal 5",
+      "dropoff_location": "The Savoy Hotel, London"
+    }
+  },
+  {
+    "case": "name_too_long",
+    "payload": {
+      "passenger_name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "flight_number": "BA256",
+      "pickup_time": "2027-06-15T10:30:00+00:00",
+      "pickup_location": "Heathrow Airport Terminal 5",
+      "dropoff_location": "The Savoy Hotel, London"
+    }
+  },
+  {
+    "case": "bad_flight_number_lowercase",
+    "payload": {
+      "passenger_name": "Maria Garcia",
+      "flight_number": "ba256",
+      "pickup_time": "2027-06-15T10:30:00+00:00",
+      "pickup_location": "Heathrow Airport Terminal 5",
+      "dropoff_location": "The Savoy Hotel, London"
+    }
+  },
+  {
+    "case": "bad_flight_number_with_space",
+    "payload": {
+      "passenger_name": "Maria Garcia",
+      "flight_number": "BA 256",
+      "pickup_time": "2027-06-15T10:30:00+00:00",
+      "pickup_location": "Heathrow Airport Terminal 5",
+      "dropoff_location": "The Savoy Hotel, London"
+    }
+  },
+  {
+    "case": "naive_datetime",
+    "payload": {
+      "passenger_name": "Maria Garcia",
+      "flight_number": "BA256",
+      "pickup_time": "2027-06-15T10:30:00",
+      "pickup_location": "Heathrow Airport Terminal 5",
+      "dropoff_location": "The Savoy Hotel, London"
+    }
+  },
+  {
+    "case": "past_pickup_time",
+    "payload": {
+      "passenger_name": "Maria Garcia",
+      "flight_number": "BA256",
+      "pickup_time": "2020-01-01T10:30:00+00:00",
+      "pickup_location": "Heathrow Airport Terminal 5",
+      "dropoff_location": "The Savoy Hotel, London"
+    }
+  },
+  {
+    "case": "same_locations",
+    "payload": {
+      "passenger_name": "Maria Garcia",
+      "flight_number": "BA256",
+      "pickup_time": "2027-06-15T10:30:00+00:00",
+      "pickup_location": "Heathrow Airport Terminal 5",
+      "dropoff_location": "Heathrow Airport Terminal 5"
+    }
+  },
+  {
+    "case": "pickup_location_too_short",
+    "payload": {
+      "passenger_name": "Maria Garcia",
+      "flight_number": "BA256",
+      "pickup_time": "2027-06-15T10:30:00+00:00",
+      "pickup_location": "A",
+      "dropoff_location": "The Savoy Hotel, London"
+    }
+  }
+]

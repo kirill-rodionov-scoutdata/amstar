@@ -1,0 +1,33 @@
+{
+  "target_date": "2027-09-10",
+  "bookings_on_date": [
+    {
+      "passenger_name": "Carlos Mendez",
+      "flight_number": "IB3504",
+      "pickup_time": "2027-09-10T07:00:00+00:00",
+      "pickup_location": "Adolfo Suarez Madrid-Barajas Airport",
+      "dropoff_location": "Hotel Gran Melia Palacio de Los Duques"
+    },
+    {
+      "passenger_name": "Sophie Laurent",
+      "flight_number": "AF1234",
+      "pickup_time": "2027-09-10T15:30:00+00:00",
+      "pickup_location": "Charles de Gaulle Airport Terminal 2E",
+      "dropoff_location": "Hotel Le Bristol Paris"
+    }
+  ],
+  "booking_prev_day": {
+    "passenger_name": "Lucas Becker",
+    "flight_number": "LH789",
+    "pickup_time": "2027-09-09T23:59:00+00:00",
+    "pickup_location": "Frankfurt Airport Terminal 2",
+    "dropoff_location": "Steigenberger Frankfurter Hof"
+  },
+  "booking_next_day": {
+    "passenger_name": "Aisha Okonkwo",
+    "flight_number": "ET500",
+    "pickup_time": "2027-09-11T00:01:00+00:00",
+    "pickup_location": "Bole International Airport",
+    "dropoff_location": "Sheraton Addis Ababa"
+  }
+}

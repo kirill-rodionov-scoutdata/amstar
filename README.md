@@ -85,6 +85,26 @@ make test     # pytest tests/
 
 ---
 
+## Testing
+
+The project uses `pytest` for unit testing with `pytest-asyncio` for asynchronous tests. Coverage is measured using `pytest-cov`.
+
+### Running Tests
+To run all unit tests:
+```bash
+uv run pytest tests/unit
+```
+
+### Coverage Report
+Coverage is configured by default in `pyproject.toml`. After running tests, you can see the report:
+- **Terminal**: A summary is printed automatically after execution.
+- **HTML Report**: A detailed line-by-line report is generated in `htmlcov/index.html`.
+
+### Test Data
+Tests are data-driven and utilize JSON files located in `tests/data/` for consistent and reproducible test cases.
+
+---
+
 ## Creating a Migration
 
 ```bash
@@ -111,8 +131,7 @@ app/
 │   │   ├── repositories/
 │   │   ├── services/
 │   │   └── unit_of_work/
-│   ├── services/          # Concrete business logic
-│   └── providers/jwt.py   # JWT issue/decode
+│   └──── services/          # Concrete business logic
 │
 ├── domain/items/          # Entities, DTOs, enums, exceptions
 │
