@@ -1,0 +1,35 @@
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+
+from app.app_layer.interfaces.repositories.item import AbstractItemRepository
+from app.app_layer.interfaces.unit_of_work.uow import AbcUnitOfWork
+from app.infra.repositories.item.alchemy import ItemRepository
+
+
+class Uow(AbcUnitOfWork):
+    def __init__(self, session_factory: async_sessionmaker) -> None:
+        self._session_factory = session_factory
+        self._session: AsyncSession | None = None
+        self._item_repo: ItemRepository | None = None
+
+    async def __aenter__(self) -> "Uow":
+        self._session = self._session_factory()
+        self._item_repo = ItemRepository(self._session)
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb) -> None:
+        if exc_type is not None:
+            await self.rollback()
+        await self.shutdown()
+
+    async def commit(self) -> None:
+        await self._session.commit()
+
+    async def rollback(self) -> None:
+        await self._session.rollback()
+
+    async def shutdown(self) -> None:
+        await self._session.close()
+
+    @property
+    def item_repo(self) -> AbstractItemRepository:
+        return self._item_repo
