@@ -1,11 +1,13 @@
 import uuid
+
 import pytest
-from app.app_layer.services.bookings.patch_update.service import BatchUpdateStatusService
+
 from app.app_layer.interfaces.services.bookings.patch_update.dto import BatchUpdateStatusInputData
 from app.app_layer.interfaces.services.bookings.patch_update.exceptions import (
     BatchBookingNotFoundError,
     BatchInvalidTransitionError,
 )
+from app.app_layer.services.bookings.patch_update.service import BatchUpdateStatusService
 from app.domain.bookings.enums import BookingStatusEnum
 
 

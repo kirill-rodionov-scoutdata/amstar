@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
@@ -35,11 +35,11 @@ def booking_entity_factory():
             id=uuid.uuid4(),
             passenger_name=passenger_name,
             flight_number=flight_number,
-            pickup_time=datetime(2027, 5, 10, 8, 0, tzinfo=timezone.utc),
+            pickup_time=datetime(2027, 5, 10, 8, 0, tzinfo=UTC),
             pickup_location="Pickup Location",
             dropoff_location="Dropoff Location",
             status=status,
-            created_at=datetime(2027, 1, 1, tzinfo=timezone.utc),
+            created_at=datetime(2027, 1, 1, tzinfo=UTC),
         )
         return BookingEntity(data=dto)
 
