@@ -1,6 +1,6 @@
 # Amstar
 
-FastAPI + Clean Architecture. MySQL, async SQLAlchemy, dependency injection, JWT. Ready to extend.
+FastAPI + Clean Architecture. MySQL, async SQLAlchemy, dependency injection. Ready to extend.
 
 ---
 
@@ -61,15 +61,6 @@ All config lives in `.env_defaults` (committed defaults) and `.env` (local overr
 | `DB__POOL_SIZE` | `10` | SQLAlchemy pool size |
 | `API__PORT` | `8200` | HTTP port |
 | `API__DOCS_ENABLED` | `true` | Enable Swagger/ReDoc |
-| `JWT__SECRET` | `dev-secret-change-me` | **Change in production** |
-| `JWT__ALGO` | `HS256` | JWT algorithm |
-| `JWT__TTL` | `86400` | Token lifetime (seconds) |
-
-Override any value by adding it to `.env`:
-```bash
-JWT__SECRET=my-real-secret
-```
-
 ---
 
 ## Makefile Commands
@@ -78,7 +69,6 @@ JWT__SECRET=my-real-secret
 make start    # docker compose up --build -d
 make stop     # docker compose down
 make migrate  # alembic upgrade head
-make fmt      # ruff format + fix
 make lint     # ruff check
 make test     # pytest tests/
 ```
@@ -124,7 +114,7 @@ app/
 ├── containers.py          # DI container (dependency-injector)
 │
 ├── api/rest/internal/v1/
-│   └── items/api.py       # HTTP controllers (@inject + Depends)
+│   └── bookings/api.py       # HTTP controllers (@inject + Depends)
 │
 ├── app_layer/
 │   ├── interfaces/        # Abstract base classes (ABC)
@@ -133,7 +123,6 @@ app/
 │   │   └── unit_of_work/
 │   └──── services/          # Concrete business logic
 │
-├── domain/items/          # Entities, DTOs, enums, exceptions
 │
 └── infra/
     ├── db/                # Engine, ORM models, mixins

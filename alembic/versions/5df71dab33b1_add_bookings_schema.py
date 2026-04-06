@@ -38,15 +38,6 @@ def upgrade() -> None:
     op.create_index('idx_bookings_pickup_time_status', 'bookings', ['pickup_time', 'status'], unique=False)
     op.create_index(op.f('ix_bookings_created_at'), 'bookings', ['created_at'], unique=False)
     op.create_index(op.f('ix_bookings_updated_at'), 'bookings', ['updated_at'], unique=False)
-    op.create_table('items',
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
-    sa.Column('title', sa.String(length=255), nullable=False),
-    sa.Column('description', sa.Text(), nullable=True),
-    sa.Column('status', sa.String(length=50), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
-    sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
-    sa.PrimaryKeyConstraint('id')
-    )
     op.create_table('booking_status_history',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('booking_id', mysql.CHAR(length=36), nullable=False),
@@ -77,7 +68,6 @@ def downgrade() -> None:
     op.drop_table('notifications')
     op.drop_index('idx_booking_status_history_booking_id', table_name='booking_status_history')
     op.drop_table('booking_status_history')
-    op.drop_table('items')
     op.drop_index(op.f('ix_bookings_updated_at'), table_name='bookings')
     op.drop_index(op.f('ix_bookings_created_at'), table_name='bookings')
     op.drop_index('idx_bookings_pickup_time_status', table_name='bookings')
