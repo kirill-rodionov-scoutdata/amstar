@@ -3,7 +3,7 @@ from datetime import UTC, datetime
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 
-class CreateBookingRequest(BaseModel):
+class CreateBookingInputData(BaseModel):
     passenger_name: str = Field(min_length=2, max_length=100)
     flight_number: str = Field(pattern=r"^[A-Z]{2,3}\d{1,4}$")
     pickup_time: datetime
@@ -20,7 +20,7 @@ class CreateBookingRequest(BaseModel):
         return v
 
     @model_validator(mode="after")
-    def locations_must_differ(self) -> "CreateBookingRequest":
+    def locations_must_differ(self) -> "CreateBookingInputData":
         if self.pickup_location == self.dropoff_location:
             raise ValueError("pickup_location and dropoff_location must differ")
         return self

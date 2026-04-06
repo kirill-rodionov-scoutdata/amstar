@@ -4,3 +4,7 @@ class BookingNotFoundError(Exception):
 
 class BookingCannotBeCancelledError(Exception):
     pass
+
+
+class BookingInvalidTransitionError(Exception):
+    pass

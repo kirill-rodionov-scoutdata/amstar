@@ -3,7 +3,6 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from app.app_layer.interfaces.repositories.booking import AbstractBookingRepository
-    from app.app_layer.interfaces.repositories.item import AbstractItemRepository
 
 
 class AbcUnitOfWork(ABC):
@@ -25,11 +24,6 @@ class AbcUnitOfWork(ABC):
 
     @abstractmethod
     async def shutdown(self) -> None:
-        raise NotImplementedError
-
-    @property
-    @abstractmethod
-    def item_repo(self) -> "AbstractItemRepository":
         raise NotImplementedError
 
     @property

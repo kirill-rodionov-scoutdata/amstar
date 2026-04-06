@@ -1,17 +1,14 @@
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from app.app_layer.interfaces.repositories.booking import AbstractBookingRepository
-from app.app_layer.interfaces.repositories.item import AbstractItemRepository
 from app.app_layer.interfaces.unit_of_work.uow import AbcUnitOfWork
 from app.infra.repositories.booking.alchemy import BookingRepository
-from app.infra.repositories.item.alchemy import ItemRepository
 
 
 class Uow(AbcUnitOfWork):
     def __init__(self, session_factory: async_sessionmaker) -> None:
         self._session_factory = session_factory
         self._session: AsyncSession | None = None
-        self._item_repo: ItemRepository | None = None
         self._booking_repo: BookingRepository | None = None
 
     async def __aenter__(self) -> "Uow":
