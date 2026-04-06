@@ -2,5 +2,5 @@ class BookingNotFoundError(Exception):
     pass
 
 
-class BookingAlreadyCancelledError(Exception):
+class BookingCannotBeCancelledError(Exception):
     pass

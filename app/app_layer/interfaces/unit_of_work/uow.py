@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from app.app_layer.interfaces.repositories.booking import AbstractBookingRepository
     from app.app_layer.interfaces.repositories.item import AbstractItemRepository
 
 
@@ -29,4 +30,9 @@ class AbcUnitOfWork(ABC):
     @property
     @abstractmethod
     def item_repo(self) -> "AbstractItemRepository":
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
+    def booking_repo(self) -> "AbstractBookingRepository":
         raise NotImplementedError

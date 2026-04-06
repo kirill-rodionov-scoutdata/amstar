@@ -1,7 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
+from app.app_layer.interfaces.repositories.booking import AbstractBookingRepository
 from app.app_layer.interfaces.repositories.item import AbstractItemRepository
 from app.app_layer.interfaces.unit_of_work.uow import AbcUnitOfWork
+from app.infra.repositories.booking.alchemy import BookingRepository
 from app.infra.repositories.item.alchemy import ItemRepository
 
 
@@ -10,15 +12,18 @@ class Uow(AbcUnitOfWork):
         self._session_factory = session_factory
         self._session: AsyncSession | None = None
         self._item_repo: ItemRepository | None = None
+        self._booking_repo: BookingRepository | None = None
 
     async def __aenter__(self) -> "Uow":
         self._session = self._session_factory()
-        self._item_repo = ItemRepository(self._session)
+        self._booking_repo = BookingRepository(self._session)
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb) -> None:
         if exc_type is not None:
             await self.rollback()
+        else:
+            await self.commit()
         await self.shutdown()
 
     async def commit(self) -> None:
@@ -31,5 +36,5 @@ class Uow(AbcUnitOfWork):
         await self._session.close()
 
     @property
-    def item_repo(self) -> AbstractItemRepository:
-        return self._item_repo
+    def booking_repo(self) -> AbstractBookingRepository:
+        return self._booking_repo

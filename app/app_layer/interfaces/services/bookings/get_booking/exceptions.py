@@ -1,0 +1,2 @@
+class GetBookingError(Exception):
+    pass
