@@ -180,4 +180,4 @@ Response:
 
 4. GET by date 2027-01-01
 
-5. 
+5. GET history by ID

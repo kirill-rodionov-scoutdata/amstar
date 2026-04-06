@@ -5,7 +5,7 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 
 from app.app_layer.interfaces.services.bookings.get_one_by_date.service import AbstractGetBookingsByDateService
-from app.app_layer.interfaces.services.bookings.patch_update.dto import BatchUpdateStatusRequest
+from app.app_layer.interfaces.services.bookings.patch_update.dto import BatchUpdateStatusInputData
 from app.app_layer.interfaces.services.bookings.patch_update.exceptions import (
     BatchBookingNotFoundError,
     BatchInvalidTransitionError,
@@ -47,7 +47,7 @@ async def create_booking(
 @router.patch("/batch-status", response_model=list[BookingDTO], status_code=status.HTTP_200_OK)
 @inject
 async def batch_update_booking_status(
-    data: BatchUpdateStatusRequest,
+    data: BatchUpdateStatusInputData,
     background_tasks: BackgroundTasks,
     service: AbstractBatchUpdateStatusService = Depends(Provide[Container.batch_update_status_service]),
 ) -> list[BookingDTO]:

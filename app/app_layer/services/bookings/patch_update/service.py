@@ -1,6 +1,6 @@
 from datetime import UTC, datetime
 
-from app.app_layer.interfaces.services.bookings.patch_update.dto import BatchUpdateStatusRequest
+from app.app_layer.interfaces.services.bookings.patch_update.dto import BatchUpdateStatusInputData
 from app.app_layer.interfaces.services.bookings.patch_update.exceptions import (
     BatchBookingNotFoundError,
     BatchInvalidTransitionError,
@@ -16,7 +16,7 @@ class BatchUpdateStatusService(AbstractBatchUpdateStatusService):
     def __init__(self, uow: AbcUnitOfWork) -> None:
         self.uow = uow
 
-    async def process(self, data: BatchUpdateStatusRequest) -> list[BookingEntity]:
+    async def process(self, data: BatchUpdateStatusInputData) -> list[BookingEntity]:
         async with self.uow as uow:
             # Phase 1: fetch all — fail fast if any are missing
             entities = await uow.booking_repo.get_by_ids(data.booking_ids)
@@ -32,7 +32,13 @@ class BatchUpdateStatusService(AbstractBatchUpdateStatusService):
             for entity in entities:
                 old_status = entity.data.status  # capture before mutation
                 try:
-                    entity.transition_to(data.new_status)
+                    if data.action == "next":
+                        entity.go_next()
+                    elif data.action == "cancel":
+                        entity.cancel()
+                    else:
+                        raise ValueError()
+
                 except BookingInvalidTransitionError:
                     raise BatchInvalidTransitionError(
                         booking_id=str(entity.data.id),
