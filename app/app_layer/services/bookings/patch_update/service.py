@@ -8,7 +8,6 @@ from app.app_layer.interfaces.services.bookings.patch_update.exceptions import (
 from app.app_layer.interfaces.services.bookings.patch_update.service import AbstractBatchUpdateStatusService
 from app.app_layer.interfaces.unit_of_work.uow import AbcUnitOfWork
 from app.domain.bookings.entities import BookingEntity
-from app.domain.bookings.enums import BookingStatusEnum
 from app.domain.bookings.exceptions import BookingInvalidTransitionError
 
 
@@ -53,12 +52,6 @@ class BatchUpdateStatusService(AbstractBatchUpdateStatusService):
                     new_status=entity.data.status,
                     changed_at=now,
                 )
-                if entity.data.status == BookingStatusEnum.CONFIRMED:
-                    await uow.notification_repo.create_notification(
-                        booking_id=entity.data.id,
-                        message=f"Your booking {entity.data.id} has been confirmed.",
-                        sent_at=now,
-                    )
                 updated.append(updated_entity)
 
         return updated

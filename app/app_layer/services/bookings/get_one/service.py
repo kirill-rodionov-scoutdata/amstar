@@ -10,8 +10,5 @@ class GetBookingService(AbstractGetBookingService):
         self.uow = uow
 
     async def process(self, booking_id: UUID) -> BookingEntity:
-        return await self._fetch(booking_id)
-
-    async def _fetch(self, booking_id: UUID) -> BookingEntity:
         async with self.uow as uow:
             return await uow.booking_repo.get_by_id(booking_id)

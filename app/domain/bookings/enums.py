@@ -1,7 +1,7 @@
-from enum import strEnum
+from enum import StrEnum
 
 
-class BookingStatusEnum(strEnum):
+class BookingStatusEnum(StrEnum):
     PENDING = "pending"
     CONFIRMED = "confirmed"
     IN_PROGRESS = "in_progress"
