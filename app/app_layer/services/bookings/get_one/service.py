@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from app.app_layer.interfaces.services.bookings.get_booking.service import AbstractGetBookingService
+from app.app_layer.interfaces.services.bookings.get_one.service import AbstractGetBookingService
 from app.app_layer.interfaces.unit_of_work.uow import AbcUnitOfWork
 from app.domain.bookings.entities import BookingEntity
 

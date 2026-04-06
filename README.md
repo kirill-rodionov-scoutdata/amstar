@@ -158,3 +158,26 @@ Response:
 5. **ORM** — add model to `app/infra/db/models.py`, generate migration
 6. **Container** — register new providers in `app/containers.py`
 7. **API** — add router in `app/api/rest/internal/v1/<name>/api.py`, include in `controllers.py`
+
+## Examples of input data
+
+1. POST create booking {
+  "passenger_name": "Ivan Ivanov",
+  "flight_number": "PRD83",
+  "pickup_time": "2027-01-01T10:00:00Z",
+  "pickup_location": "Amsterdam",
+  "dropoff_location": "Bangkok"
+}
+
+2. UPDATE booking by id with new status {
+  "booking_ids": [
+    "92e67dd1-1327-4cef-8c71-1814488594b3"
+  ],
+  "new_status": "confirmed"
+}
+
+3. GET booking by ID 92e67dd1-1327-4cef-8c71-1814488594b3
+
+4. GET by date 2027-01-01
+
+5. 

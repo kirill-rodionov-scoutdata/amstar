@@ -1,7 +1,7 @@
-from datetime import datetime
+from datetime import date, datetime
 from uuid import UUID
 
-from sqlalchemy import insert, select, update
+from sqlalchemy import insert, select, text, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.app_layer.interfaces.repositories.booking import AbstractBookingRepository
@@ -105,3 +105,27 @@ class BookingRepository(AbstractBookingRepository):
             created_at=orm_obj.created_at,
         )
         return BookingEntity(data=dto)
+
+    async def get_by_date(self, booking_date: date) -> list[BookingEntity]:
+            stmt = text(
+                """
+                SELECT *
+                FROM bookings
+                WHERE DATE(pickup_time) = :booking_date
+                ORDER BY pickup_time ASC
+                """
+            )
+
+            result = await self._session.execute(
+                stmt,
+                {"booking_date": booking_date},
+            )
+
+            rows = result.mappings().all()
+
+            entities: list[BookingEntity] = []
+            for row in rows:
+                orm_obj = BookingORM(**row)
+                entities.append(self.to_entity(orm_obj))
+
+            return entities

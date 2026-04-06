@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from app.app_layer.interfaces.services.bookings.create_booking.dto import CreateBookingInputData
+from app.app_layer.interfaces.services.bookings.create_one.dto import CreateBookingInputData
 from app.domain.bookings.entities import BookingEntity
 
 

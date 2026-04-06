@@ -1,8 +1,8 @@
 import uuid
 from datetime import UTC, datetime
 
-from app.app_layer.interfaces.services.bookings.create_booking.dto import CreateBookingInputData
-from app.app_layer.interfaces.services.bookings.create_booking.service import AbstractCreateBookingService
+from app.app_layer.interfaces.services.bookings.create_one.dto import CreateBookingInputData
+from app.app_layer.interfaces.services.bookings.create_one.service import AbstractCreateBookingService
 from app.app_layer.interfaces.unit_of_work.uow import AbcUnitOfWork
 from app.domain.bookings.dto import BookingDTO
 from app.domain.bookings.entities import BookingEntity

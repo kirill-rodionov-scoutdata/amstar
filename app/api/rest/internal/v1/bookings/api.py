@@ -1,22 +1,24 @@
+from datetime import date
 from uuid import UUID
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 
-from app.app_layer.interfaces.services.bookings.batch_update_status.dto import BatchUpdateStatusRequest
-from app.app_layer.interfaces.services.bookings.batch_update_status.exceptions import (
+from app.app_layer.interfaces.services.bookings.get_one_by_date.service import AbstractGetBookingsByDateService
+from app.app_layer.interfaces.services.bookings.patch_update.dto import BatchUpdateStatusRequest
+from app.app_layer.interfaces.services.bookings.patch_update.exceptions import (
     BatchBookingNotFoundError,
     BatchInvalidTransitionError,
 )
-from app.app_layer.interfaces.services.bookings.batch_update_status.service import AbstractBatchUpdateStatusService
-from app.app_layer.interfaces.services.bookings.create_booking.dto import CreateBookingInputData
-from app.app_layer.interfaces.services.bookings.create_booking.exceptions import (
+from app.app_layer.interfaces.services.bookings.patch_update.service import AbstractBatchUpdateStatusService
+from app.app_layer.interfaces.services.bookings.create_one.dto import CreateBookingInputData
+from app.app_layer.interfaces.services.bookings.create_one.exceptions import (
     BookingFlightNotFoundError,
     BookingUnauthorizedError,
     BookingValidationError,
 )
-from app.app_layer.interfaces.services.bookings.create_booking.service import AbstractCreateBookingService
-from app.app_layer.interfaces.services.bookings.get_booking.service import AbstractGetBookingService
+from app.app_layer.interfaces.services.bookings.create_one.service import AbstractCreateBookingService
+from app.app_layer.interfaces.services.bookings.get_one.service import AbstractGetBookingService
 from app.containers import Container
 from app.domain.bookings.dto import BookingDTO
 from app.domain.bookings.enums import BookingStatusEnum
@@ -89,3 +91,15 @@ async def get_booking(
     except BookingNotFoundError as exc:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
     return entity.data
+
+
+@router.get("", response_model=list[BookingDTO], status_code=status.HTTP_200_OK)
+@inject
+async def get_bookings_by_date(
+    pickup_date: date,
+    service: AbstractGetBookingsByDateService = Depends(
+        Provide[Container.get_bookings_by_date_service]
+    ),
+) -> list[BookingDTO]:
+    entities = await service.process(pickup_date)
+    return [entity.data for entity in entities]

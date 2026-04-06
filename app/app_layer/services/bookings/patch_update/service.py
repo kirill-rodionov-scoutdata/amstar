@@ -1,11 +1,11 @@
 from datetime import UTC, datetime
 
-from app.app_layer.interfaces.services.bookings.batch_update_status.dto import BatchUpdateStatusRequest
-from app.app_layer.interfaces.services.bookings.batch_update_status.exceptions import (
+from app.app_layer.interfaces.services.bookings.patch_update.dto import BatchUpdateStatusRequest
+from app.app_layer.interfaces.services.bookings.patch_update.exceptions import (
     BatchBookingNotFoundError,
     BatchInvalidTransitionError,
 )
-from app.app_layer.interfaces.services.bookings.batch_update_status.service import AbstractBatchUpdateStatusService
+from app.app_layer.interfaces.services.bookings.patch_update.service import AbstractBatchUpdateStatusService
 from app.app_layer.interfaces.unit_of_work.uow import AbcUnitOfWork
 from app.domain.bookings.entities import BookingEntity
 from app.domain.bookings.enums import BookingStatusEnum
