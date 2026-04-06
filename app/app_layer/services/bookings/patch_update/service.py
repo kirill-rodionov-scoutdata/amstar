@@ -43,7 +43,7 @@ class BatchUpdateStatusService(AbstractBatchUpdateStatusService):
                     raise BatchInvalidTransitionError(
                         booking_id=str(entity.data.id),
                         from_status=old_status.value,
-                        to_status=data.new_status.value,
+                        to_status=entity.data.status,
                     )
 
                 updated_entity = await uow.booking_repo.update_status(entity.data.id, entity.data.status)
@@ -54,7 +54,7 @@ class BatchUpdateStatusService(AbstractBatchUpdateStatusService):
                     changed_at=now,
                 )
                 if entity.data.status == BookingStatusEnum.CONFIRMED:
-                    await uow.booking_repo.create_notification(
+                    await uow.notification_repo.create_notification(
                         booking_id=entity.data.id,
                         message=f"Your booking {entity.data.id} has been confirmed.",
                         sent_at=now,

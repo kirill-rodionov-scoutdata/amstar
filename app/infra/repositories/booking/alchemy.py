@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from uuid import UUID
 
 from sqlalchemy import insert, select, text, update
@@ -10,7 +10,7 @@ from app.domain.bookings.dto import BookingDTO
 from app.domain.bookings.entities import BookingEntity
 from app.domain.bookings.enums import BookingStatusEnum
 from app.domain.bookings.exceptions import BookingNotFoundError
-from app.infra.db.models import BookingORM, BookingStatusHistoryORM, NotificationORM
+from app.infra.db.models import BookingORM, BookingStatusHistoryORM
 
 
 class BookingRepository(AbstractBookingRepository):
@@ -80,20 +80,6 @@ class BookingRepository(AbstractBookingRepository):
             )
         )
 
-    async def create_notification(
-        self,
-        booking_id: UUID,
-        message: str,
-        sent_at: datetime,
-    ) -> None:
-        await self._session.execute(
-            insert(NotificationORM).values(
-                transfer_id=str(booking_id),
-                message=message,
-                sent_at=sent_at,
-            )
-        )
-
     def to_entity(self, orm_obj: BookingORM) -> BookingEntity:
         dto = BookingDTO(
             id=UUID(orm_obj.id),
@@ -108,28 +94,33 @@ class BookingRepository(AbstractBookingRepository):
         return BookingEntity(data=dto)
 
     async def get_by_date(self, booking_date: date) -> list[BookingEntity]:
-            stmt = text(
-                """
-                SELECT *
-                FROM bookings
-                WHERE DATE(pickup_time) = :booking_date
-                ORDER BY pickup_time ASC
-                """
-            )
+        start_datetime: datetime = datetime.combine(booking_date, datetime.min.time())
+        end_datetime: datetime = start_datetime + timedelta(days=1)
 
-            result = await self._session.execute(
-                stmt,
-                {"booking_date": booking_date},
-            )
+        stmt = text("""
+            SELECT *
+            FROM bookings
+            WHERE pickup_time >= :start_datetime
+            AND pickup_time < :end_datetime
+            ORDER BY pickup_time ASC
+        """)
 
-            rows = result.mappings().all()
+        result = await self._session.execute(
+            stmt,
+            {
+                "start_datetime": start_datetime,
+                "end_datetime": end_datetime,
+            },
+        )
 
-            entities: list[BookingEntity] = []
-            for row in rows:
-                orm_obj = BookingORM(**row)
-                entities.append(self.to_entity(orm_obj))
+        rows = result.mappings().all()
 
-            return entities
+        entities: list[BookingEntity] = []
+        for row in rows:
+            orm_obj = BookingORM(**row)
+            entities.append(self.to_entity(orm_obj))
+
+        return entities
 
     async def get_status_history(self, booking_id: UUID) -> list[BookingStatusHistoryDTO]:
         result = await self._session.execute(

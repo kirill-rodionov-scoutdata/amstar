@@ -13,8 +13,7 @@ async def lifespan(app: FastAPI):
     container.wire(
         packages=[
             "app.api",
-            "app.app_layer",
-            "app.dependencies",
+            "app.app_layer", # ..."app.dependencies",
         ]
     )
     app.state.container = container

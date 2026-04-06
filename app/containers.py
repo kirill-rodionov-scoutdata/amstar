@@ -8,8 +8,10 @@ from app.app_layer.services.bookings.patch_update.service import BatchUpdateStat
 from app.app_layer.services.bookings.create_one.service import CreateBookingService
 from app.app_layer.services.bookings.get_one.service import GetBookingService
 from app.app_layer.services.bookings.get_history_by_id.service import GetBookingHistoryService
+from app.app_layer.services.notification.service import NotificationService
 from app.config import settings
 from app.infra.db.connection import AlchemyDatabase
+from app.infra.repositories.notification.alchemy import NotificationRepository
 from app.infra.unit_of_work.uow import Uow
 
 
@@ -23,14 +25,6 @@ class Container(containers.DeclarativeContainer):
     db = providers.Resource(get_db_resource, db_settings=settings.DB)
 
     uow = providers.Factory(Uow, session_factory=db.provided.session_factory)
-
-    jwt_provider = providers.Singleton(
-        JwtProvider,
-        secret=settings.JWT.SECRET,
-        algo=settings.JWT.ALGO,
-        ttl_seconds=settings.JWT.TTL,
-    )
-
 
     create_booking_service = providers.Factory(CreateBookingService, uow=uow)
 
@@ -46,4 +40,9 @@ class Container(containers.DeclarativeContainer):
     get_booking_history_service = providers.Factory(
     GetBookingHistoryService,
     uow=uow,
+    )
+
+    status_notification_service = providers.Factory(
+        NotificationService,
+        uow=uow,
     )

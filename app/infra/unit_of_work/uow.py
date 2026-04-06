@@ -1,8 +1,10 @@
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from app.app_layer.interfaces.repositories.booking import AbstractBookingRepository
+from app.app_layer.interfaces.repositories.notification import AbstractNotificationRepository
 from app.app_layer.interfaces.unit_of_work.uow import AbcUnitOfWork
 from app.infra.repositories.booking.alchemy import BookingRepository
+from app.infra.repositories.notification.alchemy import NotificationRepository
 
 
 class Uow(AbcUnitOfWork):
@@ -10,10 +12,12 @@ class Uow(AbcUnitOfWork):
         self._session_factory = session_factory
         self._session: AsyncSession | None = None
         self._booking_repo: BookingRepository | None = None
+        self._notification_repo: NotificationRepository | None = None
 
     async def __aenter__(self) -> "Uow":
         self._session = self._session_factory()
         self._booking_repo = BookingRepository(self._session)
+        self._notification_repo = NotificationRepository(self._session)
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb) -> None:
@@ -35,3 +39,7 @@ class Uow(AbcUnitOfWork):
     @property
     def booking_repo(self) -> AbstractBookingRepository:
         return self._booking_repo
+
+    @property
+    def notification_repo(self) -> AbstractNotificationRepository:
+        return self._notification_repo

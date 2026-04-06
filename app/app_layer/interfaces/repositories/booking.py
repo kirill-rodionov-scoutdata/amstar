@@ -32,12 +32,3 @@ class AbstractBookingRepository(ABC):
         changed_at: datetime,
     ) -> None:
         raise NotImplementedError
-
-    @abstractmethod
-    async def create_notification(
-        self,
-        booking_id: UUID,
-        message: str,
-        sent_at: datetime,
-    ) -> None:
-        raise NotImplementedError

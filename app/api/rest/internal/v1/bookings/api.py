@@ -4,6 +4,7 @@ from uuid import UUID
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 
+from app.app_layer.interfaces.notification.service import AbstractStatusNotificationService
 from app.app_layer.interfaces.services.bookings.get_history_by_id.dto import BookingStatusHistoryDTO
 from app.app_layer.interfaces.services.bookings.get_history_by_id.service import AbstractGetBookingHistoryService
 from app.app_layer.interfaces.services.bookings.get_one_by_date.service import AbstractGetBookingsByDateService
@@ -21,6 +22,7 @@ from app.app_layer.interfaces.services.bookings.create_one.exceptions import (
 )
 from app.app_layer.interfaces.services.bookings.create_one.service import AbstractCreateBookingService
 from app.app_layer.interfaces.services.bookings.get_one.service import AbstractGetBookingService
+from app.app_layer.services.background.tasks import notify_booking_confirmed_task
 from app.containers import Container
 from app.domain.bookings.dto import BookingDTO
 from app.domain.bookings.enums import BookingStatusEnum
@@ -51,10 +53,11 @@ async def create_booking(
 async def batch_update_booking_status(
     data: BatchUpdateStatusInputData,
     background_tasks: BackgroundTasks,
-    service: AbstractBatchUpdateStatusService = Depends(Provide[Container.batch_update_status_service]),
+    update_service: AbstractBatchUpdateStatusService = Depends(Provide[Container.batch_update_status_service]),
+    notification_service: AbstractStatusNotificationService = Depends(Provide[Container.status_notification_service])
 ) -> list[BookingDTO]:
     try:
-        entities = await service.process(data)
+        entities = await update_service.process(data)
     except BatchBookingNotFoundError as exc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -72,14 +75,12 @@ async def batch_update_booking_status(
         )
     for entity in entities:
         if entity.data.status == BookingStatusEnum.CONFIRMED:
-            background_tasks.add_task(_send_confirmation_notification, str(entity.data.id))
+            background_tasks.add_task(
+            notify_booking_confirmed_task,
+            notification_service,
+            entity.data.id,
+        )
     return [entity.data for entity in entities]
-
-
-async def _send_confirmation_notification(booking_id: str) -> None:
-    # Placeholder for outbound delivery (email, SMS, push).
-    # Runs after response is sent; failures here do not affect the HTTP response.
-    pass
 
 
 @router.get("/{booking_id}", response_model=BookingDTO, status_code=status.HTTP_200_OK)
