@@ -4,6 +4,8 @@ from uuid import UUID
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 
+from app.app_layer.interfaces.services.bookings.get_history_by_id.dto import BookingStatusHistoryDTO
+from app.app_layer.interfaces.services.bookings.get_history_by_id.service import AbstractGetBookingHistoryService
 from app.app_layer.interfaces.services.bookings.get_one_by_date.service import AbstractGetBookingsByDateService
 from app.app_layer.interfaces.services.bookings.patch_update.dto import BatchUpdateStatusInputData
 from app.app_layer.interfaces.services.bookings.patch_update.exceptions import (
@@ -44,7 +46,7 @@ async def create_booking(
     return entity.data
 
 
-@router.patch("/batch-status", response_model=list[BookingDTO], status_code=status.HTTP_200_OK)
+@router.patch("/update", response_model=list[BookingDTO], status_code=status.HTTP_200_OK)
 @inject
 async def batch_update_booking_status(
     data: BatchUpdateStatusInputData,
@@ -103,3 +105,23 @@ async def get_bookings_by_date(
 ) -> list[BookingDTO]:
     entities = await service.process(pickup_date)
     return [entity.data for entity in entities]
+
+@router.get(
+    "/{booking_id}/history",
+    response_model=list[BookingStatusHistoryDTO],
+    status_code=status.HTTP_200_OK,
+)
+@inject
+async def get_booking_status_history(
+    booking_id: UUID,
+    service: AbstractGetBookingHistoryService = Depends(
+        Provide[Container.get_booking_history_service]
+    ),
+) -> list[BookingStatusHistoryDTO]:
+    try:
+        return await service.process(booking_id)
+    except BookingNotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"error": "booking_not_found", "booking_id": str(booking_id)},
+        )

@@ -7,6 +7,7 @@ from app.app_layer.services.bookings.get_one_by_date.service import GetBookingsB
 from app.app_layer.services.bookings.patch_update.service import BatchUpdateStatusService
 from app.app_layer.services.bookings.create_one.service import CreateBookingService
 from app.app_layer.services.bookings.get_one.service import GetBookingService
+from app.app_layer.services.bookings.get_history_by_id.service import GetBookingHistoryService
 from app.config import settings
 from app.infra.db.connection import AlchemyDatabase
 from app.infra.unit_of_work.uow import Uow
@@ -40,4 +41,9 @@ class Container(containers.DeclarativeContainer):
     get_bookings_by_date_service = providers.Factory(
         GetBookingsByDateService,
         uow=uow,
+    )
+
+    get_booking_history_service = providers.Factory(
+    GetBookingHistoryService,
+    uow=uow,
     )

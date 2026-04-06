@@ -171,13 +171,13 @@ Response:
 
 2. UPDATE booking by id with new status {
   "booking_ids": [
-    "92e67dd1-1327-4cef-8c71-1814488594b3"
+    "8e1382c4-a362-4290-9e2c-e033c48874f7"
   ],
-  "new_status": "confirmed"
+  "action": "next" /or/ "cancel"
 }
 
 3. GET booking by ID 92e67dd1-1327-4cef-8c71-1814488594b3
 
 4. GET by date 2027-01-01
 
-5. GET history by ID
+5. GET history by ID 

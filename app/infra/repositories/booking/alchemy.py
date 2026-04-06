@@ -5,6 +5,7 @@ from sqlalchemy import insert, select, text, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.app_layer.interfaces.repositories.booking import AbstractBookingRepository
+from app.app_layer.interfaces.services.bookings.get_history_by_id.dto import BookingStatusHistoryDTO
 from app.domain.bookings.dto import BookingDTO
 from app.domain.bookings.entities import BookingEntity
 from app.domain.bookings.enums import BookingStatusEnum
@@ -129,3 +130,21 @@ class BookingRepository(AbstractBookingRepository):
                 entities.append(self.to_entity(orm_obj))
 
             return entities
+
+    async def get_status_history(self, booking_id: UUID) -> list[BookingStatusHistoryDTO]:
+        result = await self._session.execute(
+            select(BookingStatusHistoryORM)
+            .where(BookingStatusHistoryORM.booking_id == str(booking_id))
+            .order_by(BookingStatusHistoryORM.changed_at.asc())
+        )
+
+        rows = result.scalars().all()
+
+        return [
+            BookingStatusHistoryDTO(
+                old_status=row.old_status,
+                new_status=row.new_status,
+                changed_at=row.changed_at,
+            )
+            for row in rows
+        ]
