@@ -6,7 +6,7 @@ from sqlalchemy.dialects.mysql import CHAR
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 from app.domain.bookings.enums import BookingStatusEnum
-from app.infra.db.mixins import IndexedTimeMixin, TimeMixin
+from app.infra.db.mixins import IndexedTimeMixin
 
 
 class Base(DeclarativeBase):

@@ -1,5 +1,5 @@
-from datetime import datetime, timezone
 import logging
+from datetime import UTC, datetime
 from uuid import UUID
 
 from app.app_layer.interfaces.notification.service import AbstractStatusNotificationService
@@ -20,7 +20,7 @@ class NotificationService(AbstractStatusNotificationService):
             await uow.notification_repo.create_notification(
                 booking_id=booking_id,
                 message=message,
-                sent_at=datetime.now(timezone.utc),
+                sent_at=datetime.now(UTC),
             )
 
     def _build_message(self, booking_id: UUID) -> str:

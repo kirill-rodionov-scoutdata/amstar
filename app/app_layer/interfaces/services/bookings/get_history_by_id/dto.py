@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from pydantic import BaseModel
 
 from app.domain.bookings.enums import BookingStatusEnum

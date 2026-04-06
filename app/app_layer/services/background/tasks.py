@@ -1,4 +1,3 @@
-import asyncio
 from uuid import UUID
 
 from app.app_layer.interfaces.notification.service import AbstractStatusNotificationService

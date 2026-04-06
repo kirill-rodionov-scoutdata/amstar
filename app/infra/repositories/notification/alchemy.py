@@ -1,10 +1,10 @@
 from datetime import datetime
 
 from sqlalchemy import UUID, insert
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.app_layer.interfaces.repositories.notification import AbstractNotificationRepository
 from app.infra.db.models import NotificationORM
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class NotificationRepository(AbstractNotificationRepository):

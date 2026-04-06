@@ -5,15 +5,6 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 
 from app.app_layer.interfaces.notification.service import AbstractStatusNotificationService
-from app.app_layer.interfaces.services.bookings.get_history_by_id.dto import BookingStatusHistoryDTO
-from app.app_layer.interfaces.services.bookings.get_history_by_id.service import AbstractGetBookingHistoryService
-from app.app_layer.interfaces.services.bookings.get_one_by_date.service import AbstractGetBookingsByDateService
-from app.app_layer.interfaces.services.bookings.patch_update.dto import BatchUpdateStatusInputData
-from app.app_layer.interfaces.services.bookings.patch_update.exceptions import (
-    BatchBookingNotFoundError,
-    BatchInvalidTransitionError,
-)
-from app.app_layer.interfaces.services.bookings.patch_update.service import AbstractBatchUpdateStatusService
 from app.app_layer.interfaces.services.bookings.create_one.dto import CreateBookingInputData
 from app.app_layer.interfaces.services.bookings.create_one.exceptions import (
     BookingFlightNotFoundError,
@@ -21,7 +12,16 @@ from app.app_layer.interfaces.services.bookings.create_one.exceptions import (
     BookingValidationError,
 )
 from app.app_layer.interfaces.services.bookings.create_one.service import AbstractCreateBookingService
+from app.app_layer.interfaces.services.bookings.get_history_by_id.dto import BookingStatusHistoryDTO
+from app.app_layer.interfaces.services.bookings.get_history_by_id.service import AbstractGetBookingHistoryService
 from app.app_layer.interfaces.services.bookings.get_one.service import AbstractGetBookingService
+from app.app_layer.interfaces.services.bookings.get_one_by_date.service import AbstractGetBookingsByDateService
+from app.app_layer.interfaces.services.bookings.patch_update.dto import BatchUpdateStatusInputData
+from app.app_layer.interfaces.services.bookings.patch_update.exceptions import (
+    BatchBookingNotFoundError,
+    BatchInvalidTransitionError,
+)
+from app.app_layer.interfaces.services.bookings.patch_update.service import AbstractBatchUpdateStatusService
 from app.app_layer.services.background.tasks import notify_booking_confirmed_task
 from app.containers import Container
 from app.domain.bookings.dto import BookingDTO

@@ -5,17 +5,18 @@ Revises:
 Create Date: 2026-04-06 12:54:10.105023
 
 """
-from typing import Sequence, Union
+from collections.abc import Sequence
 
-from alembic import op
 import sqlalchemy as sa
 from sqlalchemy.dialects import mysql
 
+from alembic import op
+
 # revision identifiers, used by Alembic.
 revision: str = '5df71dab33b1'
-down_revision: Union[str, None] = None
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+down_revision: str | None = None
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
@@ -27,7 +28,9 @@ def upgrade() -> None:
     sa.Column('pickup_time', sa.DateTime(timezone=True), nullable=False),
     sa.Column('pickup_location', sa.String(length=255), nullable=False),
     sa.Column('dropoff_location', sa.String(length=255), nullable=False),
-    sa.Column('status', sa.Enum('pending', 'confirmed', 'in_progress', 'completed', 'cancelled', name='booking_status'), nullable=False),
+    sa.Column('status', 
+              sa.Enum('pending', 'confirmed', 'in_progress', 'completed', 'cancelled', name='booking_status'), 
+              nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.PrimaryKeyConstraint('id')
@@ -47,8 +50,12 @@ def upgrade() -> None:
     op.create_table('booking_status_history',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('booking_id', mysql.CHAR(length=36), nullable=False),
-    sa.Column('old_status', sa.Enum('pending', 'confirmed', 'in_progress', 'completed', 'cancelled', name='booking_status'), nullable=True),
-    sa.Column('new_status', sa.Enum('pending', 'confirmed', 'in_progress', 'completed', 'cancelled', name='booking_status'), nullable=False),
+    sa.Column('old_status', 
+              sa.Enum('pending', 'confirmed', 'in_progress', 'completed', 'cancelled', name='booking_status'), 
+              nullable=True),
+    sa.Column('new_status', 
+              sa.Enum('pending', 'confirmed', 'in_progress', 'completed', 'cancelled', name='booking_status'), 
+              nullable=False),
     sa.Column('changed_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['booking_id'], ['bookings.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')

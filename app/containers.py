@@ -2,16 +2,14 @@ from collections.abc import AsyncIterator
 
 from dependency_injector import containers, providers
 
-from app.app_layer.providers.jwt import JwtProvider
+from app.app_layer.services.bookings.create_one.service import CreateBookingService
+from app.app_layer.services.bookings.get_history_by_id.service import GetBookingHistoryService
+from app.app_layer.services.bookings.get_one.service import GetBookingService
 from app.app_layer.services.bookings.get_one_by_date.service import GetBookingsByDateService
 from app.app_layer.services.bookings.patch_update.service import BatchUpdateStatusService
-from app.app_layer.services.bookings.create_one.service import CreateBookingService
-from app.app_layer.services.bookings.get_one.service import GetBookingService
-from app.app_layer.services.bookings.get_history_by_id.service import GetBookingHistoryService
 from app.app_layer.services.notification.service import NotificationService
 from app.config import settings
 from app.infra.db.connection import AlchemyDatabase
-from app.infra.repositories.notification.alchemy import NotificationRepository
 from app.infra.unit_of_work.uow import Uow
 
 

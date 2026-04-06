@@ -1,10 +1,10 @@
 from uuid import UUID
 
+from app.app_layer.interfaces.services.bookings.get_history_by_id.dto import BookingStatusHistoryDTO
 from app.app_layer.interfaces.services.bookings.get_history_by_id.service import (
     AbstractGetBookingHistoryService,
 )
 from app.app_layer.interfaces.unit_of_work.uow import AbcUnitOfWork
-from app.app_layer.interfaces.services.bookings.get_history_by_id.dto import BookingStatusHistoryDTO
 from app.domain.bookings.exceptions import BookingNotFoundError
 
 
