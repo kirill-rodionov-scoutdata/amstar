@@ -22,3 +22,6 @@ class AlchemyDatabase:
     @property
     def session_factory(self) -> async_sessionmaker:
         return self._session_factory
+
+    async def dispose(self) -> None:
+        await self._engine.dispose()

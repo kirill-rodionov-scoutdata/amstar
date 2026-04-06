@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: sh -c "alembic upgrade head && python manage.py run-server"
+    command: sh -c "alembic upgrade head && python app/manage.py"
     ports:
       - "8200:8200"
     depends_on:
